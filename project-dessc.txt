@@ -1,0 +1,53 @@
+ProjectsAdd project
+Product Creator (Capgemini)editOneTheme
+Capgemini (Offsite)
+May 2025 to Present (Full Time)
+it's an agentic framework application having below functionalities - Integrating workspace associated with multiple model like gpt, ollama, mistrial, Claude. - Agent implementation for user story creation, functional test creation, and also pushing them to Jira and Git. - Code creation from functional document to any programming language like nodejs, java, php etc. - Code migration from legacy Code to latest version Code and used executor Agent to validate Code that shoul be executable and pipeline is managed by orchestrator and feedback loop. - For all, we have implemented pipeline having multiple Agent communication and with prompt techniques. - Agent for classification was also implemented using RAG to embedding the unstructured/raw data to model and provide top-k while querying. - Fine tune a model for structured data (Q/A) for a client and integrated in product Creator. used LoRA algorithm for fine tuning.
+AIPSAeditOneTheme
+Capgemini (Noida: Offsite)
+Feb 2025 to Apr 2025 (Full Time)
+AIPSA is an internal application of classification for multiple tickets based on their description. we provide multiple tickets in batch process to AI models (eg. gpt-4o, mistral) to classified them in given category. RAG implemented to use few shot learning in user prompt. categorized tickets will be downloaded in csv or can be visible on dashboard in web app.
+EnablerseditOneTheme
+Capgemini (Noida: Offsite)
+Jun 2024 to Aug 2024 (Full Time)
+Developed an encryption decryption based service for banking domain. By using ASE and RSA algorithm to transfer secure payload over the network without sharing Security credentials. That provide additional layer for security for payload. Developed node npm package that will easily install in any application and use.
+Factory Talk (Rockwell)editOneTheme
+Rockwell Automation (Noida : Offsite)
+Apr 2023 to Apr 2024 (Full Time)
+FTEM understand and optimize energy usage with contextualized analytics. Monitor, analyze and optimize energy performance. it's an IT/OT convergence platform based energy monitoring application that provides energy and production information based on an energy plant model of the underlying process at a plant, process area, lune and machine level. Manufacturers can understand where, when and how their facilities use energy to establish the necessary scope of their energy savings efforts and define key metrics.
+SnowNTelleditOneTheme
+SnowNTell (Noida: Offsite)
+Aug 2022 to Jan 2023 (Full Time)
+It's a US based play school management system. For this we have classroom app and parent app. Multiple teachers can checked in a classroom at the same time. Major module of this application are managing classes, attendance system, merging classes, leave management, supplies request for children, parent meeting, checked-in/checked-out module for child and teachers, All module are manageable from web admin also.
+PediaDoseeditOneTheme
+PedoaDose (Offsite)
+Aug 2022 to Feb 2023 (Full Time)
+It's a US based medical app to manage Medicine given to patient. System is much intelligent to tell that medicine is suitable to give for any patient based on age and weight and other parameters. How many doses can be given to patient in a day or maximum. Major modules are Medicine management, patient management, med cabinet management, illness diary management, reminder calculation for next doses, admin management for all modules as well.
+SoundIteditOneTheme
+SoundIt (Noida: Offsite)
+Aug 2022 to Feb 2023 (Full Time)
+It's a social media platform similar to instagram. Podcast is the main module for this application, we used webrtc for this and for audio syncing, clubbing audio, and for real time communication. create post, lime, dislike, feed algo, comment on post, reply on post are other functionality.
+Livia HealtheditOneTheme
+Livia (Noida: Offsite)
+Jul 2022 to Dec 2022 (Full Time)
+It's a Kenya based health application having various type of module and mobile application as well. Insurance claim is the main module in this application. I had worked on face recognition module for face verification using real streaming from android device to web browser using WEBRTC. One another module is Blog module in which question, recommendation, vlog are posted by doctor and patient. like, dislike, blocking them also another functionality with push notification
+TrackMyShuttleeditOneTheme
+TrackMyShuttle (Noida: Offsite)
+Sep 2021 to Sep 2022 (Full Time)
+It's a tracking system for the shuttles which are running on specified or non specified routes. ETA calculation was it's major module that identified on which stop shuttle will come after previous stop. making route with stop management, analytic for time taken by shuttle on one stop. Routing merging module, real time moving shuttle on map.
+KFCeditOneTheme
+KFC (Offsite)
+Oct 2020 to Sep 2021 (Full Time)
+KFC application is an extension of the global brand into UAE. I worked on few modules like product listing, cart management, placing order, payment module etc. we used SOAP apis in this application and we did not use own database. getting data from remote server in form of json and after processing data submitting back to that server by queues. Used stripe and ccavenue payment gateway for the payments.
+Bada Business (Vivek Bindra)editOneTheme
+Badabusiness (Noida: Offsite)
+Jan 2019 to Aug 2020 (Full Time)
+It's Vivek bindra's bada Business app based on their concept to grow businesses for their customers. In this application we used koa web framework, socket, sns, RabbitMQ for handling large number of request, tinyurl, bitly url, deeplink, payment gateway, firebase, notification from topics, brightcove for video streaming, Aws cloud.
+RateiteditOneTheme
+Rate-It (Noida: Onsite)
+Apr 2016 to May 2017 (Full Time)
+Rate-It is a worldwide rating management system which provides a platform to gather feedbacks for various industries. That provides manipulation for feedback data department wise also. In it multiple devices are planted and from these devices using web services feedback data stored. From this platform, it provides top to bottom level feedbacks. And also provide full control to client end user like admin functionality. Client can also manage their own role and permission and user management.
+O-tutoreditOneTheme
+O-tutor (Noida: Offsite)
+Sep 2015 to Feb 2016 (Full Time)
+In this, firstly create a college. Each college has their own admin panel and have full access to view college performance. In each college, we have four users like College Admin, Coordinator, Teachers and Learners. Each user has their scope and work. Admin has all accessibilities of the application. Coordinator has functionalities like manage categories, courses, groups (groups can be created by admin also) etc. Teachers will add learners in to groups (groups are course wise and can be multiple but at same time there should be one group assigned to learner have same course). Teachers can create multiple type of questions (multiple choice, association, short answer, arranging) and these question will be assigned to quiz. Quiz will be enable for a time period and assigned to a group. Learners in associated group can attempt those quiz and based on that report will be generated. Other modules are: Self Assignment, Forum, Graph reports course and group wise, SAAS url for each college.
