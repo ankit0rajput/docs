@@ -1,0 +1,64 @@
+1. What is RAG?
+2. Why do we need RAG if LLMs already have knowledge?
+3. Explain the complete RAG pipeline.
+4. What is document chunking?
+5. Why is chunking important?
+6. What are different chunking strategies?
+7. What is overlap between chunks?
+8. How do you determine the optimal chunk size?
+9. What are embeddings?
+10. How do embedding models work?
+11. What is cosine similarity?
+12. Difference between cosine similarity, dot product, and Euclidean distance?
+13. What is a vector database?
+14. Compare FAISS, OpenSearch, Pinecone, Weaviate, Milvus, and pgvector.
+
+15. What is hybrid search?
+16. Why combine keyword search with vector search?
+17. What is BM25?
+18. What is reranking?
+19. Why do we need a reranker?
+20. What is the difference between retrieval and reranking?
+
+21. How would you decide the value of k?
+22. What is query expansion?
+23. What is HyDE (Hypothetical Document Embeddings)?
+24. What is multi-query retrieval?
+25. What is contextual retrieval?
+26. What is parent-child retrieval?
+27. What is metadata filtering?
+28. How would you implement access control in a RAG system?
+29. How do you handle documents containing tables?
+30. How do you handle PDFs containing images?
+31. How do you handle very large documents?
+32. How would you reduce irrelevant retrievals?
+33. How would you reduce hallucinations in RAG?
+34. How would you improve RAG latency?
+35. How would you reduce RAG cost?
+36. What happens if the correct document is not retrieved?
+37. How would you debug a RAG system producing incorrect answers?
+
+RAG Evaluation
+
+1. How do you evaluate a RAG pipeline?
+2. What is retrieval evaluation?
+3. What is generation evaluation?
+4. Explain Precision@K.
+5. Explain Recall@K.
+6. What is MRR (Mean Reciprocal Rank)?
+7. What is NDCG?
+8. What is reranking evaluation?
+9. What is faithfulness?
+10. What is answer relevance?
+11. What is context relevance?
+12. What is groundedness?
+13. What is answer correctness?
+14. Difference between faithfulness and correctness.
+15. What is the difference between RAGAS and traditional IR metrics?
+16. How would you create a RAG evaluation dataset?
+17. How do you create ground-truth answers?
+18. How can an LLM be used as a judge?
+19. What are the limitations of LLM-as-a-judge?
+20. How would you perform regression testing for RAG?
+21. What metrics would you monitor in production?
+22. How would you compare two RAG implementations using A/B testing?
