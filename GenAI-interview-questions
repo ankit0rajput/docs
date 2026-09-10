@@ -1,1 +1,204 @@
+Generative AI / LLM Fundamentals
+1. What is an LLM, and how does it work at a high level?
+Ans: An LLM, or Large Language Model, is a neural network trained on a massive amount of text to understand and generate human-like language.
+At a high level, it converts text into tokens, processes them using Transformer architecture and self-attention to understand context, and predicts the next most likely token.
+2. Explain the Transformer architecture.
+Ans: Transformer is a neural network architecture introduced for processing sequential data
+  मान लो input है:
+  “Rahul is going to school.”
+  Transformer इसे roughly इन steps में process करता है:
 
+  Tokenization
+    पूरे sentence को छोटे-छोटे tokens में तोड़ा जाता है।
+    जैसे: Rahul | is | going | to | school
+  Embedding
+    हर token को एक numeric vector में बदल दिया जाता है, ताकि model उसे mathematically process कर सके।
+  Positional Information
+    Transformer को यह बताना जरूरी है कि कौन-सा word पहले और कौन-सा बाद में आया है। इसलिए हर token के साथ उसकी position की information जोड़ी जाती है।
+  Self-Attention ⭐
+    यह Transformer का सबसे important part है।
+    Model हर word को बाकी words के साथ compare करके देखता है कि कौन-से words एक-दूसरे से ज्यादा related हैं।
+    उदाहरण:
+      “The animal didn't cross the road because it was tired.”
+      
+      यहाँ “it” किसके लिए है?
+      Self-attention model को context देखकर समझने में मदद करता है कि “it” → animal को refer कर रहा है।
+
+  Multi-Head Attention
+    Model एक ही समय में अलग-अलग प्रकार के relationships देखता है—जैसे grammar, meaning, और word relationships।
+  Feed-Forward Network
+    Attention से मिली information को आगे process करके model और useful representation बनाता है।
+  यह process कई layers में repeat होता है
+    Transformer में ऐसे कई layers होते हैं। हर layer input की understanding को और बेहतर बनाती है।
+  Output / Prediction
+    GPT जैसे decoder-only models में अंत में model अगला सबसे संभावित token predict करता है और इसी तरह एक-एक करके पूरा answer generate करता है।
+  एक लाइन में याद रखो:
+    Text → Tokens → Embeddings → Position → Self-Attention → Feed Forward → Multiple Layers → Next Token Prediction
+
+3. What is self-attention?
+Ans: Self-attention is a mechanism in the Transformer 
+    Self-attention allows each token to look at other tokens and assign importance to them, helping the Transformer understand the context and relationships within the input.”
+    It calculates relationships between tokens so that the model can focus more on the relevant words when understanding the context.
+    How does it work?
+      Each token is converted into three vectors:
+      Query (Q) → मैं किस information को ढूंढ रहा हूँ?
+      Key (K) → मेरे पास कौन-सी information है?
+      Value (V) → actual information जो आगे pass होगी
+4. Type of Transformers?
+Ans: Encoder-only → Understand      ex: BERT      usecase: Classification
+    Decoder-only → Generate        ex: GPT/Llama, gemini.      usecase: Chatbots, text generation, coding
+    Encoder-Decoder → Understand → Generate      ex: T5/BART    usecase: Translation, summarization
+
+5. Why are Transformers better than RNNs for many NLP tasks?
+Ans: RNN stands for Recurrent Neural Network. It is a neural network designed to process sequential data,
+where the output from the previous step is used as input to the next step. This allows the model to maintain a kind of memory of previous information.”
+Transformers are generally better than RNNs for many NLP tasks because they can process tokens in parallel, while RNNs process them sequentially.
+Transformers also use self-attention, which allows them to capture relationships between distant words more effectively.
+
+7. What is tokenization? Why does it matter?
+Ans: Tokenization is the process of breaking text into smaller units called tokens that an LLM can process and understand.
+  Word-level tokenization
+  Character-level tokenization
+  Subword tokenization  -  unhappiness → [un, happiness]
+
+8. What are temperature, top-k, and top-p?
+Ans: Temperature controls how sharp or random the probability distribution is.
+      Low temperature = predictable
+      High temperature = creative/random
+    Example in RAG:
+      In RAG / factual application: put temp low because we want consistent and factual answers.
+      if we want creative writing than we have to put High temprature.
+  Top-K limits the model to the K most probable tokens.
+  Top-P is also called Nucleus Sampling.
+  this is different, instead of taking exact 5 or 10 candidate/token. Top P says Consider enough of the most probable tokens until their cumulative probability reaches P.
+  For each token we have probability and cumulative. and suppose top_P = 90 is setted 
+  than Model will select the smallest group of tokens whose cumulative probability reaches approximately 90%.
+  ex: from top-k token, probability value will be sum up to reach 90.
+
+  Very important: Temperature doesn't mean "accuracy"
+  Lower temperature makes generation more deterministic and focused, but it doesn't inherently make the model more factually accurate.”
+
+  These are decoding or sampling parameters that control how an LLM selects the next token. Temperature controls the randomness of the probability distribution—lower 
+  temperature makes the output more deterministic, while higher temperature increases diversity. 
+  Top-K restricts sampling to the K most probable tokens. 
+  Top-P, or nucleus sampling, dynamically selects the smallest set of tokens whose cumulative probability reaches the specified threshold. 
+  
+
+9. What is the context window?
+Ans: Context window is the maximum number of tokens an LLM can process at one time,
+    including the input prompt, conversation history, retrieved documents, and sometimes the generated output.
+    Suppose a model has a 128K token context window
+    128K tokens = Input + Conversation + RAG Context + Output
+
+10. What happens when the prompt exceeds the context window?
+Ans: When the prompt exceeds the model's context window, the request cannot fit within the model's maximum token limit.
+    it may return a context-length error, or the application may truncate some of the input.
+    leading to incomplete or incorrect answers
+
+    How do we solve it?
+    In a RAG system, common solutions are:
+      Reduce Top-K → retrieve fewer chunks.
+      Reranking → keep only the most relevant chunks.
+      Chunk-size optimization → use appropriately sized chunks.
+      Context compression → remove redundant/irrelevant information.
+      Summarization → summarize older conversation or documents.
+      Conversation management → keep recent/important messages and drop less useful history.
+      Use a model with a larger context window when appropriate.
+        Not everytime solution is to chnage model with large context window. 
+        Firstly, optimize retrieval and context construction so that the LLM receives the smallest amount of highly relevant information needed to answer the query.”
+
+11. What is hallucination, and why does it happen?
+Ans: Hallucination is when an LLM generates information that sounds confident and plausible 
+    but is factually incorrect, unsupported, or not present in the provided context.”
+    Why does it happen?
+      LLM predicts tokens, not facts
+      Insufficient or missing information
+      Poor RAG retrieval
+      Too much or irrelevant context
+      High temperature / creative decoding
+    How to improve:
+      improve retrieval quality, use reranking, provide clear grounding instructions, 
+      evaluate the system for faithfulness and correctness.
+      In RAG, strong retrieval and grounding are therefore critical to reducing hallucination.”
+
+
+
+13. Lifecycle of LLM?
+Ans:                      LLM Lifecycle
+                         │
+       ┌─────────────────┼──────────────────┐              
+       ↓                 ↓                  ↓
+  Pre-training       Post-training       inference/deployment
+                         │                  │
+                  ┌──────┴──────┐       Quantization
+                  ↓             ↓
+             Fine-tuning      RLHF
+                  │
+             ┌────┴────┐
+             ↓         ↓
+           LoRA      QLoRA
+      
+Model Optimization
+       │
+       ├── Quantization
+       └── Distillation
+
+Knowledge/Behavior Adaptation
+       │
+       ├── RAG
+       └── Fine-tuning
+
+14. What is Pre-training?
+Ans: means models are trained on massive dataset, blogs, website, content etc. and this is taken care by llm providers like openAI, anthropic, google etc.
+
+15: what is post training?
+Ans: Improves behavior and usefulness of a model after pre-training.
+    In post training: after the pre training of an model , we have to do Supervised Fine-Tuning (SFT) on high-quality instruction → response examples.
+    RLHF: Humans rank model responses, and the model is optimized toward preferred responses.
+    Safety / Alignment training: Model is trained to follow safety policies, refuse inappropriate requests, follow instructions, etc.
+
+13. What is RLHF?
+Ans: RLHF = Reinforcement Learning from Human Feedback
+      RLHF एक technique है जिसमें इंसानों के feedback का इस्तेमाल करके LLM के responses को ज्यादा helpful, safe और human preference के according बनाया जाता है।
+      RLHF क्यों किया जाता है?=> इससे model बेहतर हो सकता है
+        Helpfulness, Safety, Response quality and alingment with human examples.
+    Interview distinction
+      Instruction tuning => इंसानों द्वारा बनाए गए good examples से model को सिखाते हैं कि अच्छा response कैसा होना चाहिए।
+      RLHF => इंसानों से multiple responses की preference/ranking लेकर model को सिखाते हैं कि कौन-सा response बेहतर है।
+
+14. What is the difference between pre-training, fine-tuning, and inference?
+Ans: pre-training: explained above
+    Fine-tuning: is a part of post training. Fine-tuning changes the model's weights.
+                  Fine-tuning is the process of taking a pre-trained LLM and further training it on task- or domain-specific examples to adapt its behavior. 
+                  During fine-tuning, the model's weights are updated. For large models,
+                  parameter-efficient techniques like LoRA or QLoRA are often used to reduce the computational and memory requirements.”
+    inference: Inference is the process of using a trained LLM to generate an output or prediction for a new input.
+              means to use model we have to deploy it.
+15. Difference b/w fine tuning nad RAG?
+Ans:   Fine-tuning → changes the model. and change models weights.
+      RAG → gives additional information to the model.
+
+16. What is LoRA and QLoRA?
+Ans:    अगर हम किसी बड़े LLM को fine-tune करना चाहते हैं, तो पूरे model के billions of parameters को update करना बहुत expensive हो सकता है।
+        यहीं LoRA और QLoRA काम आते हैं।
+        LoRA = Low-Rank Adaptation: LoRA एक Parameter-Efficient Fine-Tuning (PEFT) technique है, जिसमें original LLM के weights को freeze करके केवल छोटे trainable matrices को train किया जाता है।
+          Original model → Freeze ❄️
+             +
+          Small LoRA adapters → Train
+          इसलिए बहुत कम parameters train करने पड़ते हैं। LoRA सीधे W को change नहीं करता। इसके बजाय एक छोटा update सीखता है: W' = W + ΔW
+          जहाँ ΔW को low-rank matrices के रूप में represent किया जाता है।
+          इससे: कम GPU memory, कम trainable parameters, कम training cost, faster fine-tuning, original model को preserve करना आसान
+        QLoRA: Quantized LoRA ( Quantization + LoRA को combine करता है। )
+            QLoRA में base LLM को low-bit precision, typically 4-bit, में quantize करके रखा जाता है और उसके ऊपर LoRA adapters train किए जाते हैं।
+            इससे बड़े models को comparatively कम GPU memory में fine-tune करना possible होता है।
+            QLoRA = Quantize model + freeze it + train small adapters
+
+17. When would you choose fine-tuning over RAG?
+Ans: I would choose fine-tuning over RAG when the problem is primarily about changing the model's behavior, task performance, style, or output format rather than providing external knowledge. 
+    For example, classification, consistent structured outputs, or a specialized response style are good fine-tuning use cases. 
+    If the requirement is to answer from private, dynamic, or frequently changing knowledge, I would prefer RAG. In many enterprise applications, 
+    I may use both—RAG for knowledge grounding and fine-tuning for consistent behavior.”
+
+18. What is quantization?
+19. What is model distillation?
+20. How would you select an LLM for an enterprise application?
