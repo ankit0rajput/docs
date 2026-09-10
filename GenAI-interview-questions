@@ -199,6 +199,42 @@ Ans: I would choose fine-tuning over RAG when the problem is primarily about cha
     If the requirement is to answer from private, dynamic, or frequently changing knowledge, I would prefer RAG. In many enterprise applications, 
     I may use both—RAG for knowledge grounding and fine-tuning for consistent behavior.”
 
-18. What is quantization?
+18. What is model quantization?
+Ans: Quantization is a model optimization technique that reduces the precision of model parameters, such as FP16 to INT8 or INT4, to reduce memory and improve inference efficiency with minimal loss in model quality.”
+      Quantization = Make the same model lighter
+    Why do we quantize?
+    Main benefits:
+      Lower memory/GPU VRAM
+      Smaller model size
+      Potentially faster inference
+      Lower infrastructure cost
+      Allows large LLMs to run on comparatively smaller hardware
 19. What is model distillation?
+Ans: is a model compression technique where a smaller student model is trained using the outputs or knowledge of a larger teacher model.
+      The objective is to retain as much of the teacher's performance as possible while reducing model size, latency, and inference cost.”
+      For example=> Teacher: 70B model, Student: 7B model
+        The 7B model tries to learn the useful behavior of the 70B model.
+        Why do we use distillation?
+          Because smaller models can provide:
+          Lower inference cost
+          Lower latency
+          Less memory requirement
+          Easier deployment
+          Better suitability for edge/on-premise environments
+
 20. How would you select an LLM for an enterprise application?
+Ans: I would first define the business use case and evaluation criteria, 
+      create a representative enterprise dataset, shortlist multiple models, and run them through the same evaluation framework.
+      
+      For RAG applications, I would specifically evaluate faithfulness, groundedness, answer relevance, and retrieval quality. 
+      I would then assess security, data privacy, compliance, deployment options, latency, throughput, and total cost of ownership. 
+      Finally, I would run a production-like POC and use a weighted scorecard to select the model that provides the best overall business value."
+      Steps:
+      Define the use case: What task will the LLM perform Chatbot, RAG, summarization, coding, classification, extraction, agentic workflow, etc.
+      Shortlist suitable models: Compare models based on capabilities such as reasoning, context window, tool calling, structured output, multilingual support, and domain knowledge.
+      Evaluate quality using a representative dataset: Measure metrics such as: Accuracy / Correctness, Faithfulness / Groundedness for RAG, Answer relevance, Hallucination rate, Instruction following, Safety / toxicity
+      Evaluate performance: Latency, Throughput, Context-window requirements, Concurrency and rate limits.
+      Run a Proof of Concept
+
+
+      
