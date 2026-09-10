@@ -1,0 +1,35 @@
+1. What is prompt engineering, and what problems does it solve in an enterprise GenAI application?
+2. Explain zero-shot, one-shot, and few-shot prompting. When would you choose each approach?
+3. What are the key components of a well-designed production prompt?
+4. How do system, developer, and user instructions differ, and how would you prioritize them when designing a prompt?
+5. What is role prompting? When does it improve model performance, and when is it unnecessary?
+6. How do you design prompts that produce consistent behavior across repeated requests?
+
+7. What is prompt decomposition, and when should a complex task be broken into multiple LLM calls?
+8. What is Chain-of-Thought prompting? What are its benefits and limitations?
+9. What is self-consistency prompting, and for what types of problems is it useful?
+10. What is ReAct prompting, and why is it useful for tool-using or agentic applications?
+11. How would you design a prompt for a multi-step reasoning workflow while controlling token usage and latency?
+12. What is structured output, and why is it important for enterprise applications?
+13. How would you ensure an LLM generates output that conforms to a predefined JSON schema?
+14. What would you do when the model occasionally produces malformed or incomplete structured output?
+15. How would you design prompts for function/tool calling?
+16. How would you handle a situation where the model selects the wrong tool or provides invalid tool arguments?
+17. How would you constrain an LLM to choose only from a predefined set of valid values or actions?
+18. How would you design a prompt for a RAG application?
+19. How would you instruct an LLM to answer only from retrieved information and avoid unsupported claims?
+20. What should the model do when the retrieved context does not contain enough information to answer the question?
+21. What is the "lost in the middle" problem, and how can context/prompt design reduce its impact?
+22. A RAG system gives incorrect answers. How would you determine whether the root cause is retrieval, context construction, the prompt, or the LLM?
+
+23. What is prompt injection, and how does it differ from a jailbreak attack?
+24. What is indirect prompt injection, and why is it particularly dangerous in RAG and agentic systems?
+25. How would you design an enterprise LLM application to defend against prompt injection?
+26. How would you prevent sensitive system instructions, retrieved data, or other confidential information from being exposed through model responses?
+
+27. How would you determine whether Prompt A is actually better than Prompt B?
+28. How would you create a representative golden/evaluation dataset for prompt testing?
+29. What metrics and evaluation methods would you use to measure prompt quality?
+30. How would you perform prompt experimentation, A/B testing, and regression testing before and after deploying a prompt change?
+31. A prompt has high accuracy but significantly increases token usage and latency. How would you optimize it without sacrificing quality?
+
