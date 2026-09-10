@@ -1,35 +1,170 @@
 1. What is RAG?
+Ans: You know very well.
 2. Why do we need RAG if LLMs already have knowledge?
+Ans: yes, this is also you know very well
 3. Explain the complete RAG pipeline.
+Ans:Document Ingestion → Documents ko load, parse aur clean karna.
+    Chunking → Large documents ko meaningful smaller chunks mein divide karna.
+    Embedding → Chunks ko vectors mein convert karna.
+    Vector DB / Index → Embeddings + metadata ko store/index karna.
+    Query Processing → User query ko clean/rewrite/expand karna if needed.
+    Retrieval → Relevant chunks retrieve karna — vector, keyword, ya hybrid search.
+    Reranking → Retrieved chunks mein se most relevant chunks select karna.
+    Context + Prompt Construction → Relevant chunks ko prompt ke saath LLM ko dena.
+    LLM Generation → LLM grounded answer generate karta hai.
+    Response → Answer + citations/sources user ko return karna.
 4. What is document chunking?
+Ans: Document chunking is the process of breaking a large document into smaller, meaningful pieces called chunks,
+    Example: A 50-page PDF → multiple smaller chunks of relevant text → embeddings → vector database.
+    
 5. Why is chunking important?
+Ans:  Chunking is important because LLMs and vector databases work more effectively with smaller, meaningful pieces of documents.
+      Improve retrieval accuracy
+      Preserve relevant context  
+      Control token usage and cost
+      Improve the quality of RAG-generated answers
+
 6. What are different chunking strategies?
+Ans: Common approaches include:
+      fixed-size chunking: A fixed size chunk will be ingeted in it with some vlaue in overlap.
+      recursive chunking: Document ko hierarchical separators ke basis par split karta hai, jaise:
+                Paragraph → Sentence → Word
+                Agar paragraph desired size se bada hai, to sentence level par split karega; phir zarurat pade to word level par.
+      sentence-based chunking: Document ko sentences ke basis par chunks mein divide karta hai.
+      semantic chunking:
+      structure-aware chunking:
 7. What is overlap between chunks?
+Ans: You know. this is actually to maintain the context. if that chunk retreived for context.
 8. How do you determine the optimal chunk size?
+Ans:  compare retrieval metrics like Recall@K/MRR and answer quality, while also considering token cost and latency
+      The size that gives the best balance of retrieval accuracy, context quality, cost, and latency becomes the optimal chunk size.”
+
 9. What are embeddings?
+Ans: A mathematical representation of a token. that stored on vector database.
+
 10. How do embedding models work?
-11. What is cosine similarity?
+Ans: An embedding model converts text into a numerical vector that captures its semantic meaning.
+      Similar pieces of text are mapped to vectors that are close to each other in the embedding space.
+      In RAG, we generate embeddings for document chunks and user queries, then use vector similarity to retrieve the most relevant chunks.”
+      Text → Embedding Model → Vector → Similarity Search → Relevant Content
+
 12. Difference between cosine similarity, dot product, and Euclidean distance?
+Ans: Cosine similarity → “Are these vectors pointing in the same direction?”
+                          Angle/direction between vectors
+    Dot product → “How strongly do these vectors align, considering their magnitude?”
+                    How strongly do these vectors align, considering their magnitude?
+    Euclidean distance → “How far apart are these vectors?”
+    For embeddings, cosine similarity is commonly used                      
 13. What is a vector database?
+Ans: uhhh, You know
 14. Compare FAISS, OpenSearch, Pinecone, Weaviate, Milvus, and pgvector.
+Ans: FAISS → Library, not a full database
+      Pinecone → Managed vector DB
+      OpenSearch → Search + vector + hybrid (search engine)
+      Milvus → Large-scale vector DB
 
 15. What is hybrid search?
+Ans: Hybrid search combines semantic/vector search with traditional keyword search to retrieve more relevant results. 
+      Vector search understands the meaning of the query, while keyword search is better at exact terms, IDs, names, and technical keywords.”
+      User Query → Vector Search + Keyword Search → Combine/Rerank Results → LLM
+
 16. Why combine keyword search with vector search?
+Ans: Because vector and keyword search have different strengths. Vector search is good at understanding semantic meaning, 
+    while keyword search is better for exact matches such as product names, IDs, error codes, acronyms, and technical terms.
+    Combining them improves recall and retrieval accuracy, especially in enterprise RAG systems.”
+
 17. What is BM25?
+Ans: BM25 is commonly used as the keyword-search component of hybrid search, alongside vector/semantic search.
+
 18. What is reranking?
+Ans: Reranking is a second-stage retrieval process that takes the initially retrieved documents and reorders them based on their relevance to the user's query. A reranker, often a cross-encoder or LLM, 
+      evaluates the query and each retrieved document together to select the most relevant results for the LLM.”
+      Initial retrieval is optimized for speed and recall, while reranking improves precision and relevance before sending context to the LLM.
+
 19. Why do we need a reranker?
+Ans:
+
 20. What is the difference between retrieval and reranking?
+Ans:Retrieval finds a broad set of potentially relevant documents from the database, while reranking takes those retrieved documents and reorders them based on more detailed relevance to the query.”
+    Example:
+    Query → Retrieval → Top 20 candidates → Reranking → Top 5 relevant chunks → LLM
+    Retrieval: Fast, optimized for recall.
+    Reranking: optimized for precision/relevance.
 
 21. How would you decide the value of k?
+Ans: I would not choose a fixed k arbitrarily. I would start with a reasonable range, such as 5–20, and evaluate it on a representative dataset. 
+      I would measure retrieval metrics like Recall@K and answer quality, while also considering context-window size, latency, and cost. 
+      I would choose the smallest k that provides sufficient relevant context without adding too much noise.”
+      Low K → less context, faster, but may miss relevant information
+      High K → better recall, but more noise, tokens, latency, and cost
+
 22. What is query expansion?
+Ans: Query expansion is the process of adding related terms, synonyms, or additional context to the user's original query to improve retrieval.
+      Key benefit: Improves recall, especially when the user's wording differs from the terminology used in the documents.
+
 23. What is HyDE (Hypothetical Document Embeddings)?
+Ans: HyDE is a retrieval technique where the LLM first generates a hypothetical answer or document for the user's query. 
+      That hypothetical text is then converted into an embedding and used to search the vector database, instead of directly embedding the original query.”
+      Why use it?
+      A user's query may be short or vague, while a hypothetical document contains richer semantic information, potentially improving retrieval quality.
+
 24. What is multi-query retrieval?
+Ans: Multi-query retrieval generates multiple variations of the user's original query, usually using an LLM, and runs retrieval for each variation. 
+      The results are then combined and often deduplicated or reranked to improve recall.”
+      User Query → Generate Multiple Queries → Retrieve for Each → Merge/Deduplicate → Rerank → LLM
+      
 25. What is contextual retrieval?
+Ans: Contextual retrieval is a technique where additional context is added to each document chunk before embedding and indexing it. 
+      This helps the chunk retain information about its original document, section, or topic, making retrieval more accurate.
+      Now the embedding contains more context, so the chunk is easier to retrieve for relevant queries.
+      Key benefit: Reduces the problem of isolated chunks losing their original context, improving retrieval quality in RAG.
+
 26. What is parent-child retrieval?
+Ans: Parent-child retrieval is a RAG technique where a document is divided into smaller child chunks for precise retrieval, 
+      while each child chunk is linked to a larger parent chunk containing more context. 
+      During retrieval, we search the child chunks, but provide the corresponding parent chunk to the LLM.”
+      Why use it?
+        It provides a good balance between:
+        Small child chunks → precise retrieval
+        Large parent chunks → better context for generation
+
 27. What is metadata filtering?
+Ans: Metadata filtering means using structured attributes associated with documents or chunks to restrict the search results before or 
+      during retrieval.”
+      Why use it?
+        Improves retrieval precision
+        Reduces irrelevant results
+        Supports access control
+        Can reduce retrieval cost/latency
+
 28. How would you implement access control in a RAG system?
+Ans: I would enforce access control at the retrieval layer, not rely on the LLM to decide what data a user can see. 
+      Each document or chunk would have access-control metadata such as user, role, department, tenant, or ACL information. At query time, 
+      I would derive the user's permissions and apply metadata filters during retrieval so unauthorized chunks are never sent to the LLM.
+      NOTE: Never retrieve sensitive documents and then ask the LLM to ignore them. 
+            The security boundary should be enforced before the data reaches the LLM/context.
+
 29. How do you handle documents containing tables?
+Ans: I would avoid treating tables as plain text because that can destroy their structure and relationships. 
+      I would use a document parser that preserves table structure, convert the table into a structured representation such as Markdown or JSON, 
+      and then chunk it carefully with its surrounding headers and context. 
+      For complex tables, I may store the table separately and use metadata to link it to the original document and page.”
+      Senior-level point: For tables, the goal is to preserve row-column relationships, headers, units, and document context, because simply flattening a table into text can lead to incorrect retrieval and answers.
+      PDF
+       ↓
+      Table extraction
+       ↓
+      Structured table (Markdown/JSON)
+       ↓
+      Context + metadata
+       ↓
+      Embedding / Indexing
+
 30. How do you handle PDFs containing images?
+Ans: PDFs containing images ko RAG mein handle karna thoda different hota hai because image ka content normal PDF text extraction se nahi milta.
+      [NEED to ADD MORE] [IMP]
+
+
 31. How do you handle very large documents?
 32. How would you reduce irrelevant retrievals?
 33. How would you reduce hallucinations in RAG?
