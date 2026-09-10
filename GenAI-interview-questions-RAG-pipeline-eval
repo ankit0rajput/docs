@@ -166,12 +166,78 @@ Ans: PDFs containing images ko RAG mein handle karna thoda different hota hai be
 
 
 31. How do you handle very large documents?
+Ans: For very large documents, I would not send the entire document to the LLM. I would use hierarchical or semantic chunking, create embeddings for the chunks, and retrieve only the most relevant sections. 
+        For complex questions requiring information across the document, I may use hierarchical retrieval or map-reduce summarization.”
+        For extremely large documents, I would also consider:
+            Hierarchical indexing — document → section → subsection → chunk
+            Parent-child retrieval — retrieve small chunks but provide their parent context
+            Metadata filtering — narrow the search space
+            Query decomposition — break complex questions into smaller queries
+            Map-reduce summarization — summarize sections first, then combine summaries
+
 32. How would you reduce irrelevant retrievals?
+Ans: I would improve retrieval precision by combining better chunking, metadata filtering, hybrid search, reranking, and appropriate similarity thresholds. 
+        I would also optimize the query through query rewriting or decomposition and tune the retrieval k using an evaluation dataset.”
+        Key techniques:
+            Better chunking → avoid overly broad chunks
+            Metadata filtering → restrict to relevant documents
+            Hybrid search → semantic + keyword search
+            Reranking → prioritize the most relevant chunks
+            Similarity threshold → remove low-relevance results
+            Query rewriting/decomposition → improve the search query
+            Tune Top-K based on evaluation results
+
 33. How would you reduce hallucinations in RAG?
+Ans: I would reduce hallucinations by ensuring the LLM is grounded in high-quality retrieved context and explicitly instructing it to answer only from that context.
+        I would also improve retrieval using hybrid search, reranking, metadata filtering, and appropriate similarity thresholds.”
+        Key techniques:
+            Improve retrieval quality → better chunking, embeddings, hybrid search, reranking
+            Grounding prompt → answer only from retrieved context
+            Abstention → if context doesn't contain the answer, say “I don't have enough information.”
+            Citations → require supporting sources
+            Context validation → check whether retrieved context actually supports the answer
+            LLM evaluation → measure faithfulness/groundedness and continuously test
+            NOTE: I wouldn't treat hallucination as only a prompting problem. I would investigate the entire pipeline—retrieval → context → prompt → generation—because irrelevant or incomplete retrieval is often a major cause of hallucinations.”
+
 34. How would you improve RAG latency?
+Ans: I would instrument the pipeline and measure latency for query processing, retrieval, reranking, prompt construction, and LLM generation separately. Then optimize the stage contributing most to P95/P99 latency.”
+    Key techniques:
+        Reduce retrieval latency → optimize vector indexes, use appropriate k, metadata filtering.
+        Use hybrid search efficiently → avoid unnecessary retrieval calls.
+        Optimize reranking → rerank fewer candidates or use a faster reranker.
+        Reduce context size → send only the most relevant chunks to the LLM.
+        Reduce LLM latency → use a smaller/faster model when quality allows.
+        Caching → cache embeddings, frequent queries, and repeated results.
+        Parallelization → execute independent retrieval/query operations concurrently.
+        Streaming → stream LLM output to reduce perceived latency.
+
 35. How would you reduce RAG cost?
+Ans: by optimizing both retrieval and LLM usage while maintaining answer quality.”
+        Key techniques:
+            Reduce input tokens → retrieve fewer, more relevant chunks and remove duplicate/irrelevant context.
+            Use an appropriate model → use smaller/cheaper models for simpler tasks.
+            Optimize Top-K → don't retrieve more chunks than necessary.
+            Efficient reranking → rerank a smaller candidate set.
+            Caching → cache embeddings and frequently repeated queries/results.
+            Batch processing → batch embedding generation during ingestion.
+            Optimize chunking → avoid unnecessarily overlapping or duplicated chunks.
+            Use hybrid retrieval selectively → don't run expensive retrieval stages when they're not needed.
+
 36. What happens if the correct document is not retrieved?
+Ans: improve the retrieval pipeline rather than trying to fix it only through prompting.”
+        I would investigate:
+            Query quality → query rewriting / multi-query
+            Chunking → chunk size and overlap
+            Embedding model → semantic representation quality
+            Search strategy → vector vs hybrid/BM25
+            Top-K → increase or dynamically adjust k
+            Reranking → ensure relevant candidates aren't discarded
+            Metadata filters → check whether filtering is too restrictive
+
 37. How would you debug a RAG system producing incorrect answers?
+Ans: I would compare the failing query against a golden evaluation dataset and measure retrieval metrics such as Recall@K, followed by generation metrics such as faithfulness and answer correctness. 
+        This helps isolate whether it's a retrieval problem or a generation problem, rather than randomly changing prompts.”
+
 
 RAG Evaluation
 
