@@ -1,20 +1,142 @@
 1. What is prompt engineering, and what problems does it solve in an enterprise GenAI application?
+Ans: Prompt engineering is the practice of designing, structuring, and optimizing prompts to guide an LLM toward accurate, consistent, and task-specific outputs
+  Problems it solves in enterprise applications:
+  Inconsistent responses, Hallucinations, Poor context utilization, Unstructured output
+
 2. Explain zero-shot, one-shot, and few-shot prompting. When would you choose each approach?
+Ans:  Zero-shot: No examples are provided.
+        Use when: the task is simple, well-defined, and the model already understands the task.
+      One-shot: One example is provided.
+        Use when: you need to demonstrate the expected format or behavior with minimal prompt size.
+      Few-shot: Multiple examples are provided.
+        Use when: the task is complex, domain-specific, or requires consistent output style/classification behavior.
+      
+      I would start with zero-shot, then move to one/few-shot if evaluation shows inconsistent or inaccurate results. 
+      Few-shot examples should be carefully selected because they increase token cost and latency and can introduce unwanted bias or patterns.
+
 3. What are the key components of a well-designed production prompt?
-4. How do system, developer, and user instructions differ, and how would you prioritize them when designing a prompt?
+Ans:  A production prompt should be structured, explicit, and consistent so the LLM reliably performs the intended task across different inputs.
+      Key components:
+      Role/Persona, Task, context, Instructions, Examples, output format.
+
 5. What is role prompting? When does it improve model performance, and when is it unnecessary?
+Ans:  Role prompting means assigning the LLM a specific role or perspective to guide how it approaches a task, such as “You are a customer-support assistant.” 
+      It can improve performance when the role provides useful domain context, behavioral constraints, or communication style.
+
+      When it helps:
+        Domain-specific tasks → “Act as an HR policy assistant.
+        Specialized workflows → code reviewer, support agent, analyst.
+
+      When it is unnecessary:
+        Simple factual or transformation tasks where the role adds no useful information.
+        When detailed instructions already define the required behavior.
+
 6. How do you design prompts that produce consistent behavior across repeated requests?
+Ans:  To achieve consistent behavior across repeated requests, I make the prompt explicit, deterministic where possible, and constrain the model's output.
+      Example:
+        Instead of:
+          “Classify this ticket.”
+        Use:
+          “Classify the ticket into exactly one of: Billing, Technical, Account. Return only JSON in this format: { "category": "..." }.”
+      NOTE: Consistency should be measured, not assumed. I use evaluation datasets and metrics to detect prompt regressions whenever the prompt or model changes.
 
 7. What is prompt decomposition, and when should a complex task be broken into multiple LLM calls?
+Ans:  Prompt decomposition means breaking a complex task into smaller, well-defined subtasks and handling them through separate prompts or LLM calls, instead of asking the model to solve everything in one prompt.
+      When to use multiple LLM calls:
+        The task has multiple distinct stages
+        Each stage requires different instructions or output formats
+        Intermediate results need validation
+        You need better accuracy, reliability, or observability
+        Different steps can use different models based on complexity.
+      NOTE: by extra llm calls, Extra calls add unnecessary latency and cost
+            The task is simple enough for one prompt
+      NOTE: I decompose when it improves accuracy, controllability, or maintainability enough to justify the additional latency and cost. For independent subtasks, 
+            I also consider parallel LLM calls to reduce latency.
+
 8. What is Chain-of-Thought prompting? What are its benefits and limitations?
-9. What is self-consistency prompting, and for what types of problems is it useful?
+Ans:  Chain-of-Thought (CoT) prompting encourages an LLM to solve a complex problem through intermediate reasoning steps rather than directly producing the final answer. 
+      It is mainly useful for tasks requiring multi-step reasoning, such as mathematical, logical, or planning problems.
+      NOTE: For production systems, I use CoT selectively and evaluate whether it actually improves task accuracy. For critical workflows, 
+            I prefer structured intermediate steps, tool calls, and validation rather than relying solely on generated reasoning.
+
 10. What is ReAct prompting, and why is it useful for tool-using or agentic applications?
+Ans:  ReAct (Reasoning + Acting) prompting combines reasoning with actions. The model decides what action or tool to use, executes it, observes the result, and then uses that observation to decide the next step.
+      ReAct specifically means the model follows an iterative Reason → Act → Observe → Reason... pattern.
+      ReAct:
+        User → Reason → Tool → Observe → Reason → Tool → Observe → Final Answer
+        → Multiple steps with observations influencing the next action.
+    
 11. How would you design a prompt for a multi-step reasoning workflow while controlling token usage and latency?
+Ans:  For a multi-step reasoning workflow, I would decompose the task into clear stages, define structured outputs for each stage, and avoid generating unnecessary reasoning or context. 
+      I would use the smallest suitable model and minimize the number of LLM calls.
+      Example:
+      Instead of:
+        Large prompt → LLM performs 5 tasks → huge response
+      Use:
+        Extract → Validate → Classify → Generate
+        with compact structured outputs between stages.
+      
+      I would optimize for accuracy vs. latency vs. cost, measure each LLM call independently, and remove or parallelize steps 
+      that don't provide measurable quality improvement.
+      How to control token usage
+        Pass only relevant context to each step.
+        Avoid unnecessary long instructions and examples.
+        Use structured/compact outputs, e.g. JSON.
+        Limit output using max_tokens.
+        Use smaller models for simple subtasks.
+        Avoid passing the entire previous conversation/output to every step.
+        Use RAG to retrieve only required information.
+    How to control latency
+      Reduce the number of sequential LLM calls.
+      Run independent tasks in parallel.
+      Use faster/smaller models where possible.
+      Cache repeated results.
+      Reduce retrieved chunks and reranking candidates.
+      Stream the final response when appropriate.
+
 12. What is structured output, and why is it important for enterprise applications?
+Ans:  Structured output means forcing the LLM response into a predefined format or schema, 
+      such as JSON, XML, or a Pydantic model, instead of allowing free-form text.
+      Why important in enterprise applications?
+        Consistency, Automation, Validation, Error handling
+
 13. How would you ensure an LLM generates output that conforms to a predefined JSON schema?
+Ans:  I would use schema-constrained structured output rather than relying only on prompt instructions. 
+      I define the expected JSON schema, configure the LLM/API to enforce that schema, 
+      validate the response on the application side, and handle failures with retry or fallback logic.
+
+      Key techniques:
+        Define a strict JSON Schema / Pydantic model
+        Use the model/API's structured-output or function/tool-calling capability
+        Specify required fields, types, enums, and constraints
+        Validate the returned response in the application
+        Retry or regenerate if validation fails
+        Add fallback/error handling for persistent failures
+
 14. What would you do when the model occasionally produces malformed or incomplete structured output?
+Ans:  If the model occasionally produces malformed or incomplete structured output, I would handle it using schema validation, 
+      retry mechanisms, and fallback logic rather than assuming the model will always follow the format.
+      Example:
+        If expected:
+        {
+          "category": "Technical",
+          "priority": "High"
+        }
+        but model returns:
+        {
+          "category": "Technical"
+        }
+        Schema validation detects the missing priority → retry/correction → validate again.
+      
 15. How would you design prompts for function/tool calling?
+Ans:  this this prompt:
+      we will define Instructions, in that we have mentions all possible aspect whne to generate normal answer and when to use tools.
+      or even llm also decide weather answer can be generated directly or tool required.
+      if tool required than llm can discover and route for specific tools.
+
 16. How would you handle a situation where the model selects the wrong tool or provides invalid tool arguments?
+Ans:  
+
 17. How would you constrain an LLM to choose only from a predefined set of valid values or actions?
 18. How would you design a prompt for a RAG application?
 19. How would you instruct an LLM to answer only from retrieved information and avoid unsupported claims?
